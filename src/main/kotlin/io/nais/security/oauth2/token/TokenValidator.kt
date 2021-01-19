@@ -7,11 +7,19 @@ import com.nimbusds.jose.proc.JWSVerificationKeySelector
 import com.nimbusds.jose.proc.SecurityContext
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
+import io.nais.security.oauth2.model.CacheProperties
 import java.net.URL
 
 class TokenValidator(private val issuer: String, jwkSource: JWKSource<SecurityContext?>) {
 
-    constructor(issuer: String, jwkSetUri: URL) : this(issuer, RemoteJWKSet(jwkSetUri))
+    constructor(issuer: String, jwkSetUri: URL, cacheProperties: CacheProperties) : this(
+        issuer,
+        RemoteJWKSet(
+            jwkSetUri,
+            cacheProperties.configurableResourceRetriever,
+            cacheProperties.configurableJWKSetCache
+        )
+    )
 
     private val keySelector = JWSVerificationKeySelector(JWSAlgorithm.RS256, jwkSource)
 

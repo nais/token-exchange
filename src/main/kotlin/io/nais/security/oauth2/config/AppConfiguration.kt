@@ -63,7 +63,9 @@ class AuthorizationServerProperties(
     val subjectTokenIssuers: List<SubjectTokenIssuer>,
     val tokenExpiry: Long = 300,
     val rotatingKeyStore: RotatingKeyStore,
-    val clientAssertionMaxExpiry: Long = 120
+    val clientAssertionMaxExpiry: Long = 120,
+    val jwkSetCacheLifeSpan: Long = 15,
+    val jwksSetCacheRefreshTime: Long = 5
 ) {
     fun tokenEndpointUrl() = issuerUrl.path(tokenPath)
     fun clientRegistrationUrl() = issuerUrl.path(registrationPath)
