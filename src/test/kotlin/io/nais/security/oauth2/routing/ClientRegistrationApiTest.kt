@@ -75,7 +75,7 @@ internal class ClientRegistrationApiTest {
                 DefaultOAuth2TokenCallback(
                     issuerId = "mockaad",
                     subject = "client1",
-                    audience = "incorrect_aud",
+                    audience = listOf("incorrect_aud"),
                     claims = mapOf("roles" to BearerTokenAuth.ACCEPTED_ROLES_CLAIM_VALUE)
                 )
             ).serialize()
@@ -149,7 +149,7 @@ internal class ClientRegistrationApiTest {
                 DefaultOAuth2TokenCallback(
                     issuerId = "mockaad",
                     subject = "client1",
-                    audience = "correct_aud"
+                    audience = listOf("correct_aud")
                 )
             ).serialize()
 
@@ -198,7 +198,7 @@ internal class ClientRegistrationApiTest {
                 DefaultOAuth2TokenCallback(
                     issuerId = "mockaad",
                     subject = "client1",
-                    audience = "correct_aud",
+                    audience = listOf("correct_aud"),
                     claims = mapOf("roles" to listOf("not_accepted"))
                 )
             ).serialize()
@@ -415,10 +415,10 @@ internal class ClientRegistrationApiTest {
         this.issueToken(
             issuerId = "mockaad",
             clientId = clientId,
-            OAuth2TokenCallback = DefaultOAuth2TokenCallback(
+            tokenCallback = DefaultOAuth2TokenCallback(
                 issuerId = "mockaad",
                 subject = clientId,
-                audience = "correct_aud",
+                audience = listOf("correct_aud"),
                 claims = mapOf("roles" to BearerTokenAuth.ACCEPTED_ROLES_CLAIM_VALUE)
             )
         ).serialize()

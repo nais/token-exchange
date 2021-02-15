@@ -14,6 +14,7 @@ import io.nais.security.oauth2.tokenExchangeApp
 import mu.KotlinLogging
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.OAuth2Config
+import java.net.InetAddress
 import java.net.URL
 
 val log = KotlinLogging.logger { }
@@ -54,7 +55,7 @@ private fun startMockOAuth2Server(): MockOAuth2Server =
             interactiveLogin = true
         )
     ).apply {
-        this.start(1111)
+        this.start(InetAddress.getByName("localhost"), 1111)
     }
 
 fun String.asResource(): URL = object {}.javaClass.classLoader.getResource(this)!!

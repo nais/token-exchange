@@ -1,4 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jmailen.gradle.kotlinter.tasks.LintTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val assertjVersion = "3.18.1"
 val flywayVersion = "7.4.0"
@@ -15,9 +18,9 @@ val kotlintestVersion = "3.4.2"
 val kotliqueryVersion = "1.3.1"
 val ktorVersion = "1.5.0"
 val logbackVersion = "1.2.3"
+val mockOAuth2ServerVersion = "0.2.3"
 val logstashLogbackEncoderVersion = "6.6"
 val micrometerRegistryPrometheusVersion = "1.6.2"
-val mockOAuth2ServerVersion = "0.1.35"
 val mockWebServerVersion = "4.9.0"
 val mockkVersion = "1.10.4"
 val nimbusSdkVersion = "8.30"
@@ -48,7 +51,7 @@ apply(plugin = "org.jmailen.kotlinter")
 repositories {
     mavenCentral()
     jcenter()
-    maven(url="https://dl.bintray.com/michaelbull/maven")
+    maven(url = "https://dl.bintray.com/michaelbull/maven")
 }
 
 dependencies {
@@ -90,10 +93,10 @@ dependencies {
 }
 
 tasks {
-    withType<org.jmailen.gradle.kotlinter.tasks.LintTask> {
+    withType<LintTask> {
         dependsOn("formatKotlin")
     }
-    withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    withType<ShadowJar> {
         archiveBaseName.set("app")
         archiveClassifier.set("")
         manifest {
@@ -105,7 +108,7 @@ tasks {
         }
     }
 
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "15"
         }

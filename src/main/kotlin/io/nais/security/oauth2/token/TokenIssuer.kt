@@ -25,10 +25,10 @@ class TokenIssuer(authorizationServerProperties: AuthorizationServerProperties) 
 
     private val tokenValidators: Map<String, TokenValidator> =
         authorizationServerProperties.subjectTokenIssuers.associate {
-            it.issuer to TokenValidator(it.issuer, URL(it.wellKnown.jwksUri))
+            it.issuer to TokenValidator(it.issuer, URL(it.wellKnown.jwksUri), DEFAULT_REQUIRED_CLAIMS.removeOptionalClaims(it.optionalClaims))
         }
 
-    private val internalTokenValidator: TokenValidator = TokenValidator(issuerUrl, rotatingKeyStore)
+    private val internalTokenValidator: TokenValidator = TokenValidator(issuerUrl, rotatingKeyStore, DEFAULT_REQUIRED_CLAIMS)
 
     fun publicJwkSet(): JWKSet = rotatingKeyStore.publicJWKSet()
 
@@ -68,4 +68,10 @@ class TokenIssuer(authorizationServerProperties: AuthorizationServerProperties) 
                     )
             }
         }
+
+    private fun <T> List<T>.removeOptionalClaims(optionalClaims: List<T>) = this.filterNot { optionalClaims.contains(it) }
+
+    companion object {
+        val DEFAULT_REQUIRED_CLAIMS = listOf("sub", "iss", "iat", "exp", "aud")
+    }
 }

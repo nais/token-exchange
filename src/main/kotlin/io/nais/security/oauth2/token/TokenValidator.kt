@@ -9,13 +9,17 @@ import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import java.net.URL
 
-class TokenValidator(private val issuer: String, jwkSource: JWKSource<SecurityContext?>) {
+class TokenValidator(
+    private val issuer: String,
+    jwkSource: JWKSource<SecurityContext?>,
+    private val optionalClaims: List<String>
+) {
 
-    constructor(issuer: String, jwkSetUri: URL) : this(issuer, RemoteJWKSet(jwkSetUri))
+    constructor(issuer: String, jwkSetUri: URL, optionalClaims: List<String>) : this(issuer, RemoteJWKSet(jwkSetUri), optionalClaims)
 
     private val keySelector = JWSVerificationKeySelector(JWSAlgorithm.RS256, jwkSource)
 
     fun validate(token: SignedJWT): JWTClaimsSet {
-        return token.verify(issuer, keySelector)
+        return token.verify(issuer, keySelector, optionalClaims)
     }
 }

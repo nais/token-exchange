@@ -87,7 +87,7 @@ class AuthorizationServerProperties(
 }
 
 @KtorExperimentalAPI
-class SubjectTokenIssuer(private val wellKnownUrl: String) {
+class SubjectTokenIssuer(private val wellKnownUrl: String, val optionalClaims: List<String> = emptyList()) {
     val wellKnown: WellKnown = runBlocking {
         log.info("getting OAuth2 server metadata from well-known url=$wellKnownUrl")
         defaultHttpClient.get(wellKnownUrl)
